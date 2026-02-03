@@ -9,28 +9,17 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Calls",
-            "pages": [
-              "api-reference/endpoint/trigger-call",
-              "api-reference/endpoint/get-call-details"
-            ]
-          }
+        "group": "API reference",
+        "openapi": "api-reference/openapi.json",
+        "pages": [
+          "api-reference/introduction",
+          "POST /v1/call/trigger",
+          "GET /v1/call/{call_id}"
         ]
       }
-    ],
-    "global": {
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
