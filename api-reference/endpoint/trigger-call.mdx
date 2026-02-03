@@ -1,0 +1,108 @@
+---
+title: 'Trigger call'
+description: 'Trigger an immediate outbound call using the specified AI agent'
+---
+
+Triggers an immediate outbound call using the specified AI agent. The call is queued and processed asynchronously.
+
+<ParamField header="X-API-Key" type="string" required>
+Your unique organization API key. Required on all requests.
+</ParamField>
+
+## Request body
+
+<ParamField body="agent_id" type="string" required>
+The UUID of the AI agent to conduct the call.
+</ParamField>
+
+<ParamField body="to_number" type="string" required>
+The destination phone number in E.164 format (e.g. `+919876543210`). Must include country code. Pattern: `+` followed by 10–15 digits.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+Optional. Additional metadata to pass context to the agent (e.g. customer information, call objectives). Arbitrary key-value pairs.
+</ParamField>
+
+## Response
+
+### Success (202 Accepted)
+
+Call request accepted and queued.
+
+<ResponseField name="message" type="string">
+Human-readable status message.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+Status value, e.g. `accepted`.
+</ResponseField>
+
+<ResponseField name="call_id" type="string">
+The unique identifier for the call (UUID). Use this to fetch call details later.
+</ResponseField>
+
+### Errors
+
+| Status | Description |
+|--------|-------------|
+| 400 | Bad request — invalid request body or phone number format |
+| 404 | Agent not found or does not belong to your company |
+| 500 | Internal server error |
+
+## Examples
+
+<RequestExample>
+```bash cURL
+curl -X POST "https://api.samora.ai/v1/call/trigger" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "123e4567-e89b-12d3-a456-426614174000",
+    "to_number": "+919876543210"
+  }'
+```
+</RequestExample>
+
+<RequestExample>
+```bash cURL
+# With metadata
+curl -X POST "https://api.samora.ai/v1/call/trigger" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "123e4567-e89b-12d3-a456-426614174000",
+    "to_number": "+919876543210",
+    "metadata": {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "customer_id": "CUST-001"
+    }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 202 Accepted
+{
+  "message": "Call request accepted",
+  "status": "accepted",
+  "call_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 400 Bad Request
+{
+  "message": "Invalid phone number format. Please use E.164 format (e.g., +919876543210)"
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 404 Not Found
+{
+  "message": "Agent not found or does not belong to your company"
+}
+```
+</ResponseExample>

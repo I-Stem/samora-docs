@@ -1,33 +1,66 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Overview of the Samora AI Outbound Call API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Overview
 
-## Welcome
+The Samora AI Outbound Call API lets you trigger immediate outbound calls through the Samora AI system. Use it to start calls with your AI agents, pass context via metadata, and retrieve call details including transcripts and recordings.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Base URL
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+All requests go to:
+
+```
+https://api.samora.ai
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Every request must include your organization API key in the header:
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+| Header     | Description                        |
+| ---------- | ---------------------------------- |
+| `X-API-Key` | Your unique organization API key   |
+
+Example:
+
+```bash
+curl -X POST "https://api.samora.ai/v1/call/trigger" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id": "123e4567-e89b-12d3-a456-426614174000", "to_number": "+919876543210"}'
 ```
+
+## Endpoints
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/v1/call/trigger` | [Trigger an outbound call](/api-reference/endpoint/trigger-call)       |
+| GET    | `/v1/call/{call_id}` | [Get details for a specific call](/api-reference/endpoint/get-call-details) |
+
+## Phone number format
+
+Destination numbers must be in **E.164** format (e.g. `+919876543210`) and include the country code. The pattern is: `+` followed by 10–15 digits.
+
+## Call statuses
+
+When you fetch call details, `status` can be:
+
+- `PENDING` — Call request created, not yet initiated
+- `TRIGGERED` — Call initiated
+- `ONGOING` — Call in progress
+- `CALL_FINISHED` — Call completed
+- `UNANSWERED` — No answer
+- `REJECTED` — Call rejected
+
+## Transcripts and recordings
+
+For finished calls, the Get call details response can include:
+
+- **transcript_url** — Presigned URL for the call transcript (valid 60 minutes)
+- **recording_url** — Presigned URL for the call recording (valid 60 minutes)
+
+## Support
+
+For API support, contact [Samora AI Support](https://api.samora.ai).
