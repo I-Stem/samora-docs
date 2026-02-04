@@ -8,29 +8,25 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "openapi": "api-reference/openapi.json"
+  },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Calls",
-            "pages": [
-              "api-reference/endpoint/trigger-call",
-              "api-reference/endpoint/get-call-details"
-            ]
-          }
+        "group": "Getting started",
+        "pages": [
+          "api-reference/introduction"
+        ]
+      },
+      {
+        "group": "API reference",
+        "pages": [
+          "api-reference/endpoint/trigger-call",
+          "api-reference/endpoint/get-call-details"
         ]
       }
-    ],
-    "global": {
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
