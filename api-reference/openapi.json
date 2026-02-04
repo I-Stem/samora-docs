@@ -4,18 +4,14 @@
     "title": "Samora AI Outbound Call API",
     "description": "The Samora AI Outbound Call API lets you trigger immediate outbound calls through the Samora AI system. Use it to start calls with your AI agents, pass context via metadata, and retrieve call details including transcripts and recordings.\n\n**Phone number format:** Destination numbers must be in E.164 format (e.g. `+919876543210`) and include the country code. The pattern is: `+` followed by 10–15 digits.\n\n**Call statuses:** When you fetch call details, `status` can be: `PENDING`, `TRIGGERED`, `ONGOING`, `CALL_FINISHED`, `UNANSWERED`, `REJECTED`.\n\n**Transcripts and recordings:** For finished calls, presigned URLs for transcript and recording are valid for 60 minutes.",
     "version": "1.0.0",
-    "contact": {
-      "name": "Samora AI Support",
-      "email": "vineeth@samora.ai"
-    },
     "license": {
       "name": "Proprietary"
     }
   },
   "servers": [
     {
-      "url": "https://api.samora.ai",
-      "description": "Production"
+      "url": "https://api.samora.ai/v1",
+      "description": "Production server (uses live data)"
     }
   ],
   "security": [
@@ -23,19 +19,10 @@
       "ApiKeyAuth": []
     }
   ],
-  "tags": [
-    {
-      "name": "Calls",
-      "description": "Trigger and retrieve outbound call details"
-    }
-  ],
   "paths": {
-    "/v1/call/trigger": {
+    "/call/trigger": {
       "post": {
-        "tags": ["Calls"],
-        "summary": "Trigger call",
         "description": "Triggers an immediate outbound call using the specified AI agent. The call is queued and processed asynchronously.",
-        "operationId": "triggerCall",
         "requestBody": {
           "required": true,
           "content": {
@@ -113,12 +100,9 @@
         }
       }
     },
-    "/v1/call/{call_id}": {
+    "/call/{call_id}": {
       "get": {
-        "tags": ["Calls"],
-        "summary": "Get call details",
         "description": "Retrieves detailed information about a specific call by its ID. The call must belong to an agent that belongs to your company. Transcript and recording URLs are presigned and valid for 60 minutes.",
-        "operationId": "getCallDetails",
         "parameters": [
           {
             "name": "call_id",
