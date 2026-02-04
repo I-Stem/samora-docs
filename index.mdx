@@ -1,97 +1,66 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: 'Introduction'
+description: 'Overview of the Samora AI Outbound Call API'
 ---
 
-## Setting up
+## Overview
 
-Get your documentation site up and running in minutes.
+The Samora AI Outbound Call API lets you trigger immediate outbound calls through the Samora AI system. Use it to start calls with your AI agents, pass context via metadata, and retrieve call details including transcripts and recordings.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## Base URL
 
-## Make it yours
+All requests go to:
 
-Design a docs site that looks great and empowers your users.
+```
+https://api.samora.ai
+```
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+## Authentication
 
-## Create beautiful pages
+Every request must include your organization API key in the header:
 
-Everything you need to create world-class documentation.
+| Header     | Description                        |
+| ---------- | ---------------------------------- |
+| `X-API-Key` | Your unique organization API key   |
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+Example:
 
-## Need inspiration?
+```bash
+curl -X POST "https://api.samora.ai/v1/call/trigger" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"agent_id": "123e4567-e89b-12d3-a456-426614174000", "to_number": "+919876543210"}'
+```
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Endpoints
+
+| Method | Path              | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| POST   | `/v1/call/trigger` | [Trigger an outbound call](/api-reference/endpoint/trigger-call)       |
+| GET    | `/v1/call/{call_id}` | [Get details for a specific call](/api-reference/endpoint/get-call-details) |
+
+## Phone number format
+
+Destination numbers must be in **E.164** format (e.g. `+919876543210`) and include the country code. The pattern is: `+` followed by 10–15 digits.
+
+## Call statuses
+
+When you fetch call details, `status` can be:
+
+- `PENDING` — Call request created, not yet initiated
+- `TRIGGERED` — Call initiated
+- `ONGOING` — Call in progress
+- `CALL_FINISHED` — Call completed
+- `UNANSWERED` — No answer
+- `REJECTED` — Call rejected
+
+## Transcripts and recordings
+
+For finished calls, the Get call details response can include:
+
+- **transcript_url** — Presigned URL for the call transcript (valid 60 minutes)
+- **recording_url** — Presigned URL for the call recording (valid 60 minutes)
+
+## Support
+
+For API support, contact [Samora AI Support](mailto:vineeth@samora.ai).
